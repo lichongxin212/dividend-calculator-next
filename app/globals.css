@@ -3,19 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-color: #4CAF50;
+  /* other custom variables */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-gray-50;
+  }
+  h1 {
+    @apply text-3xl font-bold mb-6;
+  }
+  h2 {
+    @apply text-2xl font-semibold mb-4;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .main-content {
+    @apply space-y-8;
+  }
+  .search-section {
+    @apply p-6;
+  }
+  .calculator-section {
+    @apply bg-white p-6 rounded-lg shadow;
+  }
+  .section-title {
+    @apply mb-6;
+  }
+  .calculate-btn {
+    @apply mt-4 px-6 py-2 bg-[#4CAF50] text-white rounded-md hover:bg-[#45a049] transition-colors;
+  }
 }

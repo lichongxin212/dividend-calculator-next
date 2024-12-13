@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dividend Calculator | Calculate dividend yield of your portfolio</title>
+    <meta name="description" content="Free online dividend calculator to analyze your stock portfolio's dividend income. Track dividend payments, calculate annual yields, view monthly dividend distribution, and analyze portfolio allocation. Support stocks and ETFs like JEPI, SCHD, VOO." />
+    <meta name="keywords" content="dividend calculator, portfolio dividend tracker, dividend yield calculator, annual dividend, monthly dividend income, stock dividend analysis, ETF dividend calculator, dividend payment tracker, JEPI dividend, SCHD dividend, SPYD dividend, portfolio dividend calculator, dividend history tracker" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" sizes="32x32" href="favicon-32x32.png" type="image/png">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <img class="nav-icon" src="favicon-32x32.png" alt="Dividend Calculator home page" width="24" height="24">
+                <span>Dividend Calculator</span>
+            </div>
+            <ul class="nav-links">
+                <!-- <li class="active" title="Dividend Portfolio Calculator"><a href="#">Portfolio</a></li>
+                <li><a href="#" title="Stock Dividend Calculator">Stock</a></li>
+                <li><a href="mailto:dividend-calculator@gmail.com?subject=Feedback%20for%20Dividend%20Calculator" title="Send feedback">Feedback</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Dividend Calculator</h1>
+        </header>
+
+        <div class="main-content">
+            <section class="search-section">
+                <div class="form-group full-width">
+                    <div class="input-with-button">
+                        <div class="autocomplete-container">
+                            <input type="text" id="ticker" placeholder="Enter company name or ticker, e.g. Microsoft or MSFT">
+                            <div class="autocomplete-dropdown hidden"></div>
+                        </div>
+                        <button type="button" id="searchStock" class="search-btn">
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="quick-ticker-buttons">
+                        <button type="button" class="quick-ticker-btn" data-ticker="SCHD">SCHD</button>
+                        <button type="button" class="quick-ticker-btn" data-ticker="JEPI">JEPI</button>
+                        <button type="button" class="quick-ticker-btn" data-ticker="VOO">VOO</button>
+                        <button type="button" class="quick-ticker-btn" data-ticker="MSFT">MSFT</button>
+                        <button type="button" class="quick-ticker-btn" data-ticker="KO">KO</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="calculator-section">
+                <div class="section-title">
+                    <h2>Dividend Portfolio</h2>
+                </div>
+                <section class="calculator-form">
+                    <div class="stock-info-table-container">
+                        <table id="stockInfoTable">
+                            <thead>
+                                <tr>
+                                    <th>Ticker</th>
+                                    <th>Dividend Frequency</th>
+                                    <th>Last 12 Months Dividends</th>
+                                    <th>Current Price</th>
+                                    <th>Annual Dividend Yield</th>
+                                    <th>Quantity</th>
+                                    <th>Investment Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button id="calculate" class="calculate-btn">Calculate Dividends</button>
+                </section>
+
+                <section class="results hidden">
+                    <div class="section-title">
+                        <h2>Annual Dividend Income</h2>
+                    </div>
+                    <div class="portfolio-summary">
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <h3>Portfolio Amount</h3>
+                                <p class="amount">$0.00</p>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Annual Dividend Income (Est.)</h3>
+                                <p class="amount">$0.00</p>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Annual Dividend Yield (Est.)</h3>
+                                <p class="amount">0.00%</p>
+                            </div>
+                        </div>
+                        <div class="charts-container">
+                            <div class="chart-wrapper">
+                                <canvas id="portfolioChart"></canvas>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="monthlyDividendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section class="faq-section">
+                <div class="section-title">
+                    <h2>FAQs</h2>
+                </div>
+                <div class="faq-cards">
+                    <div class="faq-card">
+                        <h3>How to calculate stock dividend yield?</h3>
+                        <p>Dividend yield is calculated by dividing the total dividends paid over the past 12 months by the current stock price. For example, if a stock paid $2 in dividends over the last year and currently trades at $50, its dividend yield would be 4% ($2/$50 × 100%).</p>
+                        <p>This calculator automatically fetches the last 12 months of actual dividend payments and current stock prices to provide accurate dividend yields.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>How to calculate portfolio dividend yield?</h3>
+                        <p>Portfolio dividend yield is calculated by dividing the total annual dividend income by the total portfolio value. The calculator sums up all individual stock positions' dividend income and investment amounts to determine the overall portfolio yield.</p>
+                        <p>For example, if your portfolio value is $10,000 and generates $400 in annual dividends, your portfolio dividend yield would be 4%.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>How to use this dividend calculator?</h3>
+                        <p>1. Enter a stock symbol or company name in the search box</p>
+                        <p>2. Adjust the quantity of shares you own or plan to buy</p>
+                        <p>3. Add multiple stocks to create your portfolio</p>
+                        <p>4. Click "Calculate Portfolio Dividends" to see your total portfolio value, annual dividend income, and monthly dividend distribution</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>How are monthly dividends calculated?</h3>
+                        <p>The monthly dividend chart shows the distribution of dividend payments across the year based on actual ex-dividend dates from the past 12 months. This helps you understand when you'll receive dividend payments and plan your income accordingly.</p>
+                        <p>The calculator only includes dividends that have already been paid (ex-dividend date has passed) to provide accurate income projections.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>What stocks can I analyze with this calculator?</h3>
+                        <p>You can analyze any publicly traded US stocks and ETFs that pay dividends. Popular dividend ETFs like SCHD, JEPI, and VOO are supported, as well as dividend-paying stocks like AAPL, MSFT, and others.</p>
+                        <p>The calculator uses real-time stock prices and historical dividend data to provide accurate calculations.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>What is dividend reinvestment?</h3>
+                        <p>Dividend reinvestment (DRIP) is a strategy where you automatically use dividend payments to purchase additional shares of the same stock. This compounds your returns in two ways:</p>
+                        <p>1. Your share count increases with each dividend payment, leading to larger future dividend payments</p>
+                        <p>2. You benefit from both dividend income and potential stock price appreciation on the reinvested shares</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 Dividend Calculator. All rights reserved.</p>
+            <p>Data provided by <a href="https://polygon.io" target="_blank" rel="noopener">Polygon.io</a></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="script.js"></script>
+
+    <div style="display: none;">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-H65XK5Z8T2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-H65XK5Z8T2');
+        </script>
+    </div>
+</body>
+</html> 
