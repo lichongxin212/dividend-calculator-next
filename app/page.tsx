@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import StockSearch from '@/components/StockSearch';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { type StockInfo } from '@/lib/api';
+import { type StockDetail } from '@/lib/api';
 
 const POPULAR_STOCKS = [
     { ticker: 'SCHD', name: 'Schwab US Dividend Equity ETF' },
@@ -17,7 +17,7 @@ const POPULAR_STOCKS = [
 ];
 
 export default function StockDividendCalculator() {
-    const [stockInfo, setStockInfo] = useState<StockInfo | null>(null);
+    const [stockInfo, setStockInfo] = useState<StockDetail | null>(null);
     const [shares, setShares] = useState<string>('100');
     const [price, setPrice] = useState<string>('');
     const [investmentAmount, setInvestmentAmount] = useState<string>('');

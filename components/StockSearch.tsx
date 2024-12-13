@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { getStockInfo, type StockInfo } from '@/lib/api';
+import { getStockInfo, type StockDetail } from '@/lib/api';
 import ErrorMessage from './ErrorMessage';
 
 interface StockSearchProps {
-  onAddStock: (stock: StockInfo) => void;
+  onAddStock: (stock: StockDetail) => void;
 }
 
 export default function StockSearch({ onAddStock }: StockSearchProps) {
