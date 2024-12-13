@@ -8,8 +8,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dividend Calculator | Calculate dividend yield of your portfolio",
-  description: "Free online dividend calculator to analyze your stock portfolio's dividend income.",
+  title: "Dividend Calculator",
+  description: "Calculate your dividend investment returns",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -19,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head />
       <body className={`${inter.className} min-h-full bg-gray-50`}>
         <Navbar />
 

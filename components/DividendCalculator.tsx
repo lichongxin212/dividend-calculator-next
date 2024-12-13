@@ -33,28 +33,29 @@ export default function DividendCalculator() {
 
   return (
     <div className="container">
-      <header>
-        <h1>Monthly Dividend Calculator</h1>
+      <header className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-800">Portfolio Dividend Calculator</h1>
       </header>
 
-      <div className="main-content">
-        {/* Search Section */}
-        <section className="search-section">
-          <StockSearch onAddStock={(stock) => setStocks([...stocks, stock])} />
-        </section>
+      {/* Search Section */}
+      <section className="mb-12">
+        <StockSearch buttonText="Add"/>
+      </section>
 
+
+      <div className="main-content">
         {/* Calculator Section */}
         <section className="calculator-section">
           <div className="section-title">
             <h2>Dividend Portfolio</h2>
           </div>
-          
-          <PortfolioTable 
-            stocks={stocks} 
+
+          <PortfolioTable
+            stocks={stocks}
             onUpdateStock={(updatedStocks) => setStocks(updatedStocks)}
           />
-          
-          <button 
+
+          <button
             className="calculate-btn"
             onClick={calculatePortfolio}
           >

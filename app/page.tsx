@@ -12,7 +12,7 @@ export default function HomePage() {
 
             {/* Search Section */}
             <section className="mb-12">
-                <StockSearch />
+                <StockSearch buttonText="Go" />
             </section>
 
             <PopularStocks />

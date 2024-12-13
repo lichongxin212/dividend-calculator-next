@@ -149,7 +149,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
 
     const dividendPaymentsPerYear = Number(dividendFrequency); // 每年发放股息次数
 
-    let accumulatedDividendsNoDRIP = 0; // 添加���计股息变量
+    let accumulatedDividendsNoDRIP = 0; // 添加累计股息变量
 
     for (let year = 1; year <= holdingPeriod; year++) {
       let yearStartShares = sharesDRIP;

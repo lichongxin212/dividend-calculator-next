@@ -9,7 +9,7 @@ interface Suggestion {
   name: string;
 }
 
-export default function StockSearch() {
+export default function StockSearch({buttonText}: {buttonText: string}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -124,7 +124,7 @@ export default function StockSearch() {
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              'GO'
+              buttonText
             )}
           </button>
 
