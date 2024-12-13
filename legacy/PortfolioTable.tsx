@@ -2,25 +2,25 @@
 
 import { useState } from 'react';
 
-interface Stock {
+interface PortfolioStock {
   ticker: string;
   frequency: string;
-  dividends12Month: number;
+  dividendPerShare: number;
   currentPrice: number;
   dividendYield: number;
-  quantity: number;
+  numberOfShares: number;
   investmentAmount: number;
 }
 
 interface PortfolioTableProps {
-  stocks: Stock[];
-  onUpdateStock: (stocks: Stock[]) => void;
+  stocks: PortfolioStock[];
+  onUpdateStock: (stocks: PortfolioStock[]) => void;
 }
 
 export default function PortfolioTable({ stocks, onUpdateStock }: PortfolioTableProps) {
   const updateQuantity = (index: number, quantity: number) => {
     const updatedStocks = [...stocks];
-    updatedStocks[index].quantity = quantity;
+    updatedStocks[index].numberOfShares = quantity;
     updatedStocks[index].investmentAmount = quantity * updatedStocks[index].currentPrice;
     onUpdateStock(updatedStocks);
   };
@@ -31,27 +31,27 @@ export default function PortfolioTable({ stocks, onUpdateStock }: PortfolioTable
         <thead>
           <tr>
             <th className="p-3 text-left bg-gray-50 font-semibold border-b">Ticker</th>
-            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Dividend Frequency</th>
-            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Last 12 Months Dividends</th>
             <th className="p-3 text-left bg-gray-50 font-semibold border-b">Current Price</th>
-            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Annual Dividend Yield</th>
-            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Quantity</th>
+            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Dividend per Share</th>
+            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Frequency</th>
+            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Dividend Yield</th>
+            <th className="p-3 text-left bg-gray-50 font-semibold border-b">Number of Shares</th>
             <th className="p-3 text-left bg-gray-50 font-semibold border-b">Investment Amount</th>
           </tr>
         </thead>
         <tbody>
           {stocks.map((stock, index) => (
-            <tr key={`${stock.ticker}-${index}`} className="border-b hover:bg-gray-50">
+            <tr key={stock.ticker} className="border-b hover:bg-gray-50">
               <td className="p-3">{stock.ticker}</td>
-              <td className="p-3">{stock.frequency}</td>
-              <td className="p-3">${stock.dividends12Month.toFixed(2)}</td>
               <td className="p-3">${stock.currentPrice.toFixed(2)}</td>
-              <td className="p-3">{(stock.dividendYield * 100).toFixed(2)}%</td>
+              <td className="p-3">${stock.dividendPerShare.toFixed(2)}</td>
+              <td className="p-3">{stock.frequency}</td>
+              <td className="p-3">{(stock.dividendYield).toFixed(2)}%</td>
               <td className="p-3">
                 <input
                   type="number"
                   min="0"
-                  value={stock.quantity}
+                  value={stock.numberOfShares}
                   onChange={(e) => updateQuantity(index, Number(e.target.value))}
                   className="w-20 p-2 border rounded-md"
                 />

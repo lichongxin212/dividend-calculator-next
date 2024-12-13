@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 
 const API_KEY = process.env.POLYGON_API_KEY;
 const BASE_URL = 'https://api.polygon.io';
@@ -21,28 +22,35 @@ export interface StockDividend {
     frequency: string;
 }
 
-export async function getStockDetails(ticker: string): Promise<StockDetail> {
-    try {
-        const [dividendHistory, currentPrice] = await Promise.all([
-            getDividendHistory(ticker),
-            getCurrentPrice(ticker)
-        ]);
+export const getStockDetails = unstable_cache(
+    async (ticker: string): Promise<StockDetail> => {
+        try {
+            const [dividendHistory, currentPrice] = await Promise.all([
+                getDividendHistory(ticker),
+                getCurrentPrice(ticker)
+            ]);
 
-        const annualDividend = calculateAnnualDividend(dividendHistory);
-        const dividendYield = (annualDividend / currentPrice) * 100;
+            const annualDividend = calculateAnnualDividend(dividendHistory);
+            const dividendYield = (annualDividend / currentPrice) * 100;
 
-        return {
-            ticker,
-            annualDividend,
-            currentPrice,
-            dividendYield,
-            dividendHistory
-        };
-    } catch (error) {
-        console.error('Error fetching stock data:', error);
-        throw new Error('Failed to fetch stock data');
+            return {
+                ticker,
+                annualDividend,
+                currentPrice,
+                dividendYield,
+                dividendHistory
+            };
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            throw new Error('Failed to fetch stock data');
+        }
+    },
+    ['stock-details'],
+    {
+        revalidate: 600,
+        tags: ['stock-details']
     }
-}
+);
 
 function getFrequencyText(freq: number): string {
     const frequencies: { [key: number]: string } = {

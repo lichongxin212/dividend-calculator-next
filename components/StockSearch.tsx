@@ -3,13 +3,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from './ErrorMessage';
+import { StockDetail } from '@/lib/api';
 
 interface Suggestion {
   ticker: string;
   name: string;
 }
 
-export default function StockSearch({buttonText}: {buttonText: string}) {
+interface StockSearchProps {
+  buttonText: string;
+  onAddStock?: (stock: StockDetail) => void;
+}
+
+export default function StockSearch({ buttonText, onAddStock }: StockSearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +73,16 @@ export default function StockSearch({buttonText}: {buttonText: string}) {
       if (!response.ok) {
         throw new Error('Stock not found. Please check the ticker symbol.');
       }
-      router.push(`/${ticker.toLowerCase()}`);
+      const stockDetails = await response.json();
+      
+      if (onAddStock) {
+        // 如果是添加模式，调用添加回调
+        onAddStock(stockDetails);
+        setSearchTerm(''); // 清空搜索框
+      } else {
+        // 如果是导航模式，跳转到股票页面
+        router.push(`/${ticker.toLowerCase()}`);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch stock info');
     } finally {

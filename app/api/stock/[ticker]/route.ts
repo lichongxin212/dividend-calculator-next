@@ -1,5 +1,5 @@
+import { getStockDetails } from '@/lib/api';
 import { NextResponse } from 'next/server';
-import { getCurrentPrice } from '@/lib/api';
 
 export async function GET(
   request: Request,
@@ -7,16 +7,11 @@ export async function GET(
 ) {
   try {
     const ticker = params.ticker;
-    const currentPrice = await getCurrentPrice(ticker);
-
-    return NextResponse.json({
-      ticker,
-      currentPrice,
-    });
+    const stockDetails = await getStockDetails(ticker);
+    return NextResponse.json(stockDetails);
   } catch (error) {
-    console.error('Error fetching stock data:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch stock data' },
+      { error: '获取股票数据失败' },
       { status: 500 }
     );
   }

@@ -187,7 +187,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           extraInvestmentFrequency === 'Quarterly' ? 4 : 1;
 
       for (let i = 0; i < investmentTimes; i++) {
-        // 计算新增股��
+        // 计算新增股数
         const newShares = extraInvestment / currentPrice;
         extraInvestmentShares += newShares;
 

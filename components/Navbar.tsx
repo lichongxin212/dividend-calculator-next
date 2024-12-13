@@ -3,9 +3,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // 检查是否是股票相关页面
+  const isStockActive = pathname === '/' || pathname === '/stock';
+  const isPortfolioActive = pathname === '/portfolio';
+
+  const getLinkClasses = (isActive: boolean) => {
+    return `text-gray-600 hover:text-[#4CAF50] transition-colors relative ${
+      isActive ? 'text-[#4CAF50] font-semibold border-b-2 border-[#4CAF50]' : ''
+    }`;
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -27,8 +39,18 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-gray-600 hover:text-[#4CAF50]">Home</Link>
-            <Link href="/portfolio" className="text-gray-600 hover:text-[#4CAF50]">Portfolio</Link>
+            <Link 
+              href="/" 
+              className={getLinkClasses(isStockActive)}
+            >
+              Stock
+            </Link>
+            <Link 
+              href="/portfolio" 
+              className={getLinkClasses(isPortfolioActive)}
+            >
+              Portfolio
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -53,8 +75,18 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden py-4">
             <div className="flex flex-col gap-4">
-              <Link href="/" className="text-gray-600 hover:text-[#4CAF50]">Home</Link>
-              <Link href="/portfolio" className="text-gray-600 hover:text-[#4CAF50]">Portfolio</Link>
+              <Link 
+                href="/" 
+                className={getLinkClasses(isStockActive)}
+              >
+                Stock
+              </Link>
+              <Link 
+                href="/portfolio" 
+                className={getLinkClasses(isPortfolioActive)}
+              >
+                Portfolio
+              </Link>
             </div>
           </div>
         )}

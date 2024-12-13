@@ -1,25 +1,12 @@
-import { unstable_cache } from 'next/cache';
 import { getStockDetails } from '@/lib/api';
-import StockDividendCalculator from '@/components/StockDividendCalculator';
+import StockDividendCalculator from '@/components/StockCalculator';
 import PopularStocks from '@/components/PopularStocks';
 
 export const revalidate = 3600; // 每小时重新验证一次数据
 
-// 创建缓存的 getStockDetails 函数
-const getCachedStockDetails = unstable_cache(
-  async (ticker: string) => {
-    return await getStockDetails(ticker);
-  },
-  ['stock-details'], // 缓存键前缀
-  {
-    revalidate: 600, // 10分钟后重新验证
-    tags: ['stock-details']
-  }
-);
-
 export default async function JEPIPage() {
   try {
-    const stockDetails = await getCachedStockDetails('JEPI');
+    const stockDetails = await getStockDetails('JEPI');
 
     return (
       <div>
