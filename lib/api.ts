@@ -78,6 +78,15 @@ export async function getCurrentPrice(ticker: string) {
     return data.results[0].c;
 }
 
+
+export async function searchStocks(query: string) {
+    const response = await fetch(
+        `${BASE_URL}/v3/reference/tickers?search=${query}&active=true&sort=ticker&market=stocks&order=asc&limit=6&apiKey=${API_KEY}`
+    );
+    const data = await response.json();
+    return data.results || [];
+}
+
 function calculateAnnualDividend(dividendHistory: any[]): number {
     if (dividendHistory.length === 0) return 0;
 

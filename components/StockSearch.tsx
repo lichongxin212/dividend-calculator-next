@@ -1,31 +1,105 @@
 'use client';
 
-import { useState } from 'react';
-import { getStockInfo, type StockDetail } from '@/lib/api';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import ErrorMessage from './ErrorMessage';
 
-interface StockSearchProps {
-  onAddStock: (stock: StockDetail) => void;
+interface Suggestion {
+  ticker: string;
+  name: string;
 }
 
-export default function StockSearch({ onAddStock }: StockSearchProps) {
+export default function StockSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const router = useRouter();
+  const searchTimeout = useRef<NodeJS.Timeout>();
 
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) return;
+  useEffect(() => {
+    if (searchTerm.trim().length < 1) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    // 清除之前的定时器
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    // 设置新的定时器
+    searchTimeout.current = setTimeout(async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/stock/search?q=${searchTerm}`);
+        if (response.ok) {
+          const data = await response.json();
+          setSuggestions(data);
+          setShowSuggestions(true);
+        }
+      } catch (err) {
+        console.error('Search error:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+    };
+  }, [searchTerm]);
+
+  const handleSearch = async (ticker: string = searchTerm) => {
+    if (!ticker.trim()) return;
     
     setIsLoading(true);
     setError(null);
+    setShowSuggestions(false);
     
     try {
-      const stockInfo = await getStockInfo(searchTerm.toUpperCase());
-      onAddStock(stockInfo);
+      const response = await fetch(`/api/stock/${ticker.toUpperCase()}`);
+      if (!response.ok) {
+        throw new Error('Stock not found. Please check the ticker symbol.');
+      }
+      router.push(`/${ticker.toLowerCase()}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch stock info');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => 
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => prev > 0 ? prev - 1 : 0);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0) {
+          handleSearch(suggestions[selectedIndex].ticker);
+        } else {
+          handleSearch();
+        }
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        break;
     }
   };
 
@@ -37,22 +111,40 @@ export default function StockSearch({ onAddStock }: StockSearchProps) {
             type="text" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter a stock name or ticker to calculate, e.g. Apple or AAPL"
+            onKeyDown={handleKeyDown}
+            placeholder="Enter a stock ticker symbol, e.g. SCHD"
             className="w-full px-6 py-4 text-lg border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent"
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
           <button 
             type="button" 
-            onClick={handleSearch}
+            onClick={() => handleSearch()}
             disabled={isLoading} 
             className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-[#4CAF50] text-white rounded-full hover:bg-[#45a049] transition-colors disabled:bg-gray-400"
           >
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              'Go'
+              'GO'
             )}
           </button>
+
+          {/* Suggestions Dropdown */}
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-auto">
+              {suggestions.map((suggestion, index) => (
+                <li 
+                  key={suggestion.ticker}
+                  className={`px-4 py-2 cursor-pointer hover:bg-gray-50 ${
+                    index === selectedIndex ? 'bg-gray-100' : ''
+                  }`}
+                  onClick={() => handleSearch(suggestion.ticker)}
+                >
+                  <span className="font-semibold">{suggestion.ticker}</span>
+                  <span className="text-gray-600 ml-2">{suggestion.name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         {error && <ErrorMessage message={error} />}
       </div>

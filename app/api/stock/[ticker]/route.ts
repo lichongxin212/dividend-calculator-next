@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDividendHistory, getCurrentPrice, calculateAnnualDividend } from '@/lib/api';
+import { getCurrentPrice } from '@/lib/api';
 
 export async function GET(
   request: Request,
@@ -7,20 +7,11 @@ export async function GET(
 ) {
   try {
     const ticker = params.ticker;
-    const [dividendHistory, currentPrice] = await Promise.all([
-      getDividendHistory(ticker),
-      getCurrentPrice(ticker)
-    ]);
-
-    const annualDividend = calculateAnnualDividend(dividendHistory);
-    const dividendYield = (annualDividend / currentPrice) * 100;
+    const currentPrice = await getCurrentPrice(ticker);
 
     return NextResponse.json({
       ticker,
-      annualDividend,
       currentPrice,
-      dividendYield,
-      dividendHistory
     });
   } catch (error) {
     console.error('Error fetching stock data:', error);

@@ -1,13 +1,32 @@
-import { getCurrentPrice, getDividendHistory, getStockDetails } from '@/lib/api';
+import { unstable_cache } from 'next/cache';
+import { getStockDetails } from '@/lib/api';
 import StockDividendCalculator from '@/components/StockDividendCalculator';
+import PopularStocks from '@/components/PopularStocks';
 
 export const revalidate = 3600; // 每小时重新验证一次数据
 
+// 创建缓存的 getStockDetails 函数
+const getCachedStockDetails = unstable_cache(
+  async (ticker: string) => {
+    return await getStockDetails(ticker);
+  },
+  ['stock-details'], // 缓存键前缀
+  {
+    revalidate: 600, // 10分钟后重新验证
+    tags: ['stock-details']
+  }
+);
+
 export default async function SCHDPage() {
   try {
-    const stockDetails = await getStockDetails('SCHD');
-    
-    return <StockDividendCalculator stockDetail={stockDetails} />;
+    const stockDetails = await getCachedStockDetails('SCHD');
+
+    return (
+      <div>
+        <StockDividendCalculator stockDetail={stockDetails} />
+        <PopularStocks />
+      </div>
+    );
   } catch (error) {
     console.error('Error loading SCHD data:', error);
     return (
@@ -16,7 +35,7 @@ export default async function SCHDPage() {
           Error loading SCHD data
         </h1>
         <p className="text-gray-600">
-          Please try again later or check our other dividend stocks.
+          Please try again later.
         </p>
       </div>
     );

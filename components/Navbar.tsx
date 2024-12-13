@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -11,7 +12,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo and Title */}
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <Image 
               src="/favicon-32x32.png"
               alt="Dividend Calculator"
@@ -22,18 +23,12 @@ export default function Navbar() {
             <span className="text-2xl font-semibold text-[#4CAF50]">
               Dividend Calculator
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-gray-600 hover:text-[#4CAF50]">Stock</a>
-            <a href="#" className="text-gray-600 hover:text-[#4CAF50]">Monthly</a>
-            <a 
-              href="mailto:dividend-calculator@gmail.com?subject=Feedback%20for%20Dividend%20Calculator"
-              className="text-gray-600 hover:text-[#4CAF50]"
-            >
-              Feedback
-            </a>
+            <Link href="/" className="text-gray-600 hover:text-[#4CAF50]">Home</Link>
+            <Link href="/portfolio" className="text-gray-600 hover:text-[#4CAF50]">Portfolio</Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -58,15 +53,8 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden py-4">
             <div className="flex flex-col gap-4">
-              <a href="#" className="text-gray-600 hover:text-[#4CAF50]">Stock</a>
-              <a href="#" className="text-gray-600 hover:text-[#4CAF50]">Monthly</a>
-              
-              <a 
-                href="mailto:dividend-calculator@gmail.com?subject=Feedback%20for%20Dividend%20Calculator"
-                className="text-gray-600 hover:text-[#4CAF50]"
-              >
-                Feedback
-              </a>
+              <Link href="/" className="text-gray-600 hover:text-[#4CAF50]">Home</Link>
+              <Link href="/portfolio" className="text-gray-600 hover:text-[#4CAF50]">Portfolio</Link>
             </div>
           </div>
         )}
