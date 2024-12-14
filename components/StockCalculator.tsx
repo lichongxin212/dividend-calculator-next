@@ -356,7 +356,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           }
           return true; // Annual Dividends 图表显示所有标签
         },
-        color: '#000',
+        // color: '#000',
         anchor: function (context: any) {
           const datasetCount = context.chart.data.datasets.length;
           if (datasetCount === 3) { // Total Balance 图表
@@ -426,7 +426,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
       <section className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className="block text-gray-600 mb-2">Current Price</label>
+            <label className="block text-gray-600 mb-2">Share Price</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
               <input
@@ -630,7 +630,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           {/* Annual Dividend Income 图表 */}
           <div className="bg-white p-4 md:p-6 rounded-lg shadow">
             <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Annual Dividend Income</h3>
-            <div className="relative h-[300px] md:h-[400px]">
+            <div className="relative h-[300px] md:h-[400px] max-w-[900px] mx-auto">
               <Bar 
                 data={annualDividendsData} 
                 options={{
@@ -682,7 +682,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           {/* Total Balance 图表 */}
           <div className="bg-white p-4 md:p-6 rounded-lg shadow">
             <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Total Balance</h3>
-            <div className="relative h-[300px] md:h-[400px]">
+            <div className="relative h-[300px] md:h-[400px] max-w-[900px] mx-auto">
               <Bar 
                 data={totalBalanceData} 
                 options={{

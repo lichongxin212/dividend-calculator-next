@@ -24,6 +24,7 @@ export default function StockSearch({ buttonText, onAddStock }: StockSearchProps
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const searchTimeout = useRef<NodeJS.Timeout>();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (searchTerm.trim().length < 1) {
@@ -60,6 +61,10 @@ export default function StockSearch({ buttonText, onAddStock }: StockSearchProps
       }
     };
   }, [searchTerm]);
+
+  useEffect(() => {
+    searchInputRef.current?.focus();
+  }, []);
 
   const handleSearch = async (ticker: string = searchTerm) => {
     if (!ticker.trim()) return;
@@ -123,6 +128,7 @@ export default function StockSearch({ buttonText, onAddStock }: StockSearchProps
       <div className="flex flex-col items-center gap-4">
         <div className="w-full relative">
           <input 
+            ref={searchInputRef}
             type="text" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

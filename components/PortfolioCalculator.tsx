@@ -1,16 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import StockSearch from '@/components/StockSearch';
 import { StockDetail } from '@/lib/api';
 import { Pie, Bar } from 'react-chartjs-2';
+import Toast from '@/components/Toast';
 
 interface PortfolioStock {
   ticker: string;
   frequency: string;
   dividendPerShare: number;
+  annualDividend: number;
   currentPrice: number;
   dividendYield: number;
   numberOfShares: string;
@@ -27,6 +29,7 @@ export default function PortfolioCalculator() {
   const [stocks, setStocks] = useState<PortfolioStock[]>([]);
   const [portfolioResults, setPortfolioResults] = useState<PortfolioResults | null>(null);
   const [activeField, setActiveField] = useState<'shares' | 'amount' | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
   const chartOptions = {
     plugins: {
@@ -82,7 +85,8 @@ export default function PortfolioCalculator() {
     const results = stocks.reduce((acc, stock) => {
       const shares = Number(stock.numberOfShares) || 0;
       const amount = Number(stock.investmentAmount) || 0;
-      const annualDividend = shares * stock.dividendPerShare;
+      console.log(stock.annualDividend);
+      const annualDividend = shares * stock.annualDividend;
 
       return {
         portfolioAmount: acc.portfolioAmount + amount,
@@ -101,13 +105,35 @@ export default function PortfolioCalculator() {
       : 0;
 
     setPortfolioResults(results);
+
+    // 添加滚动效果
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handleAddStock = (stockDetail: StockDetail) => {
+    // 检查是否已存在该股票
+    if (stocks.some(stock => stock.ticker === stockDetail.ticker)) {
+      setToast(`${stockDetail.ticker} is already in your portfolio`);
+      setTimeout(() => setToast(null), 5000);
+      return;
+    }
+
+    // 检查是否达到最大限制
+    if (stocks.length >= 5) {
+      setToast('Maximum 5 stocks allowed in portfolio');
+      setTimeout(() => setToast(null), 5000);
+      return;
+    }
+    // 获取最近一次分红金额
+    const latestDividend = stockDetail.dividendHistory[0]?.amount || 0;
+
     setStocks(prevStocks => [...prevStocks, {
       ticker: stockDetail.ticker,
       frequency: stockDetail.dividendHistory[0]?.frequency || 'Unknown',
-      dividendPerShare: stockDetail.annualDividend,
+      dividendPerShare: latestDividend,
+      annualDividend: stockDetail.annualDividend,
       currentPrice: stockDetail.currentPrice,
       dividendYield: stockDetail.dividendYield,
       numberOfShares: '100',
@@ -128,8 +154,15 @@ export default function PortfolioCalculator() {
       datasets: [{
         data: stocks.map(stock => Number(stock.investmentAmount) || 0),
         backgroundColor: [
-          '#4CAF50', '#45a049', '#357a38', '#2e6830', '#266b29',
-          '#1e5e22', '#16511b', '#0e4414', '#06370d', '#002a06'
+          'rgba(76, 175, 80, 0.6)',    // 主绿色
+          'rgba(33, 150, 243, 0.6)',    // 蓝色
+          'rgba(255, 152, 0, 0.6)',     // 橙色
+          'rgba(156, 39, 176, 0.6)',    // 紫色
+          'rgba(0, 150, 136, 0.6)',     // 青色
+          'rgba(233, 30, 99, 0.6)',     // 粉色
+          'rgba(103, 58, 183, 0.6)',    // 深紫色
+          'rgba(255, 193, 7, 0.6)',     // 琥珀色
+          'rgba(96, 125, 139, 0.6)'     // 蓝灰色
         ]
       }]
     };
@@ -138,21 +171,28 @@ export default function PortfolioCalculator() {
     const monthlyData = Array(12).fill(0);
     stocks.forEach(stock => {
       const shares = Number(stock.numberOfShares) || 0;
-      const monthlyDividend = Number((stock.dividendPerShare * shares) / 12);
+      const dividendPerShare = Number(stock.dividendPerShare) || 0;
       
       // 根据频率分配到不同月份
       switch (stock.frequency) {
         case 'Monthly':
-          monthlyData.forEach((_, i) => monthlyData[i] += monthlyDividend);
+          // 月度分红：每月获得dividendPerShare金额
+          monthlyData.forEach((_, i) => monthlyData[i] += dividendPerShare * shares);
           break;
+        
         case 'Quarterly':
-          [2, 5, 8, 11].forEach(month => monthlyData[month] += monthlyDividend * 3);
+          // 季度分红：每季度获得dividendPerShare金额
+          [2, 5, 8, 11].forEach(month => monthlyData[month] += dividendPerShare * shares);
           break;
+        
         case 'Bi-annual':
-          [5, 11].forEach(month => monthlyData[month] += monthlyDividend * 6);
+          // 半年度分红：每半年获得dividendPerShare金额
+          [5, 11].forEach(month => monthlyData[month] += dividendPerShare * shares);
           break;
+        
         case 'Annual':
-          monthlyData[11] += monthlyDividend * 12;
+          // 年度分红：每年获得dividendPerShare金额
+          monthlyData[11] += dividendPerShare * shares;
           break;
       }
     });
@@ -162,7 +202,7 @@ export default function PortfolioCalculator() {
       datasets: [{
         label: 'Monthly Dividend Income',
         data: monthlyData,
-        backgroundColor: '#4CAF50',
+        backgroundColor: 'rgba(76, 175, 80, 0.6)',
         borderRadius: 6,
         maxBarThickness: 50
       }]
@@ -170,6 +210,9 @@ export default function PortfolioCalculator() {
 
     return { distributionData, monthlyChartData };
   };
+
+  // 添加 ref
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="container">
@@ -195,7 +238,7 @@ export default function PortfolioCalculator() {
                 <th className="p-4 text-center font-semibold text-gray-600 border-b">Investment Amount</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="min-h-[144px]">
               {stocks.map((stock, index) => (
                 <tr key={stock.ticker} className="border-b hover:bg-gray-50">
                   <td className="p-3">
@@ -258,6 +301,13 @@ export default function PortfolioCalculator() {
                   </td>
                 </tr>
               ))}
+              {stocks.length < 3 && Array(3 - stocks.length).fill(0).map((_, index) => (
+                <tr key={`empty-${index}`} className="h-[48px] border-b">
+                  {Array(7).fill(0).map((_, colIndex) => (
+                    <td key={colIndex} className="p-3"></td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -273,10 +323,10 @@ export default function PortfolioCalculator() {
         </button>
       </section>
 
-      {/* Results Section */}
+      {/* Results Section - 添加 ref */}
       {portfolioResults && (
         <>
-          <section className="my-8">
+          <section ref={resultsRef} className="my-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white rounded-lg shadow-sm p-6 text-center">
                 <h3 className="text-gray-500 text-sm font-medium mb-2">Portfolio Amount</h3>
@@ -286,7 +336,7 @@ export default function PortfolioCalculator() {
               </div>
               
               <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-                <h3 className="text-gray-500 text-sm font-medium mb-2">Annual Dividend Income</h3>
+                <h3 className="text-gray-500 text-sm font-medium mb-2">Annual Dividend Income (Est.)</h3>
                 <p className="text-2xl font-bold text-[#4CAF50]">
                   ${portfolioResults.annualDividendIncome.toFixed(2)}
                 </p>
@@ -301,17 +351,116 @@ export default function PortfolioCalculator() {
             </div>
           </section>
 
-          <section className="my-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Portfolio Distribution Chart */}
+          <section className="my-8">
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h3 className="text-gray-500 text-sm font-medium mb-4 text-center">Portfolio Distribution</h3>
-              
+              {generateChartData()?.distributionData && (
+                <div className="max-w-[500px] mx-auto aspect-square">
+                  <Pie
+                    data={generateChartData()?.distributionData || {
+                      labels: [],
+                      datasets: [{ data: [], backgroundColor: [] }]
+                    }}
+                    options={{
+                      ...chartOptions,
+                      plugins: {
+                        ...chartOptions.plugins,
+                        legend: {
+                          ...chartOptions.plugins.legend,
+                          position: 'right'
+                        },
+                        datalabels: {
+                          ...chartOptions.plugins.datalabels,
+                          formatter: (value, ctx) => {
+                            const sum = ctx.dataset.data.reduce((a, b) => 
+                              (Number(a) || 0) + (Number(b) || 0), 0
+                            );
+                            return ((Number(value) / sum) * 100).toFixed(1) + '%';
+                          }
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              )}
             </div>
+          </section>
 
+          {/* Monthly Dividend Income Chart */}
+          <section className="my-8">
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-gray-500 text-sm font-medium mb-4 text-center">Monthly Dividend Income</h3>
+              <h3 className="text-gray-500 text-sm font-medium mb-4 text-center">Monthly Dividend Income (Est.)</h3>
+              {generateChartData()?.monthlyChartData && (
+                <div className="h-[300px] max-w-[800px] mx-auto">
+                  <Bar
+                    data={generateChartData()?.monthlyChartData || {
+                      labels: [],
+                      datasets: [{ label: '', data: [], backgroundColor: '' }]
+                    }}
+                    options={{
+                      ...chartOptions,
+                      plugins: {
+                        ...chartOptions.plugins,
+                        legend: {
+                          display: false
+                        },
+                        datalabels: {
+                          ...chartOptions.plugins.datalabels,
+                          color: '#4CAF50',
+                          backgroundColor: 'white',
+                          borderRadius: 4,
+                          padding: 4,
+                          font: {
+                            weight: 'bold',
+                            size: 11
+                          },
+                          formatter: (value) => '$' + Number(value).toFixed(2),
+                          anchor: 'end',
+                          align: 'top',
+                          offset: 0
+                        }
+                      },
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                          grid: {
+                            color: '#f0f0f0'
+                          },
+                          ticks: {
+                            callback: (value) => '$' + value,
+                            font: {
+                              size: 11
+                            }
+                          }
+                        },
+                        x: {
+                          grid: {
+                            display: false
+                          },
+                          ticks: {
+                            font: {
+                              size: 11
+                            }
+                          }
+                        }
+                      },
+                      maintainAspectRatio: false
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </section>
         </>
+      )}
+
+      {/* Toast Message */}
+      {toast && (
+        <Toast 
+          message={toast} 
+          onClose={() => setToast(null)}
+        />
       )}
 
     </div>

@@ -1,6 +1,31 @@
 import { getStockDetails } from '@/lib/api';
 import StockDividendCalculator from '@/components/StockCalculator';
 import PopularStocks from '@/components/PopularStocks';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "SCHD Dividend Calculator - Calculate Your SCHD Investment Returns",
+  description: "Free SCHD dividend calculator to analyze Schwab US Dividend Equity ETF returns over time. Track dividend history, calculate yields, estimate monthly income, and project future dividend growth. Updated daily with latest SCHD data.",
+  openGraph: {
+    title: "SCHD Dividend Calculator | Calculate Your SCHD Investment Returns",
+    description: "Calculate SCHD dividend yields, analyze payment history, and estimate future income with our free dividend calculator. Get real-time data for Schwab US Dividend Equity ETF.",
+    type: "website",
+    url: "https://dividend-calculator.org/schd",
+  },
+  keywords: [
+    "SCHD dividend calculator",
+    "Schwab US Dividend Equity ETF",
+    "SCHD yield calculator",
+    "SCHD dividend history",
+    "SCHD ETF analysis",
+    "dividend growth calculator",
+    "monthly dividend income",
+    "SCHD investment returns"
+  ].join(", "),
+  alternates: {
+    canonical: "https://dividend-calculator.org/schd"
+  }
+};
 
 export const revalidate = 3600; // 每小时重新验证一次数据
 
