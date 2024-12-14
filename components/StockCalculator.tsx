@@ -48,8 +48,8 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
   const [extraInvestment, setExtraInvestment] = useState<string>('0');
   const [holdingPeriod, setHoldingPeriod] = useState<string>('10');
   const [isDRIP, setIsDRIP] = useState<boolean>(true);
-  const [dividendGrowthRate, setDividendGrowthRate] = useState<string>('11.5');
-  const [stockAppreciation, setStockAppreciation] = useState<string>('13');
+  const [dividendGrowthRate, setDividendGrowthRate] = useState<string>(stockDetail.dividendGrowthRate.toString());
+  const [stockAppreciation, setStockAppreciation] = useState<string>(stockDetail.stockAppreciation.toString());
 
   // 获取最后一次股息记录
   const latestDividend = stockDetail.dividendHistory
@@ -416,6 +416,14 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
     chartRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // 添加 ref
+  const initialInvestmentRef = useRef<HTMLInputElement>(null);
+
+  // 添加 useEffect 处理自动聚焦
+  useEffect(() => {
+    initialInvestmentRef.current?.focus();
+  }, []);
+
   return (
     <div className="container">
       <header className="text-center mb-12">
@@ -456,6 +464,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
               <input
+                ref={initialInvestmentRef}
                 type="number"
                 value={investmentAmount}
                 onChange={(e) => handleInvestmentChange(e.target.value)}
@@ -631,8 +640,8 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           <div className="bg-white p-4 md:p-6 rounded-lg shadow">
             <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Annual Dividend Income</h3>
             <div className="relative h-[300px] md:h-[400px] max-w-[900px] mx-auto">
-              <Bar 
-                data={annualDividendsData} 
+              <Bar
+                data={annualDividendsData}
                 options={{
                   ...chartOptions,
                   maintainAspectRatio: false,
@@ -674,7 +683,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                       }
                     }
                   }
-                }} 
+                }}
               />
             </div>
           </div>
@@ -683,8 +692,8 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
           <div className="bg-white p-4 md:p-6 rounded-lg shadow">
             <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Total Balance</h3>
             <div className="relative h-[300px] md:h-[400px] max-w-[900px] mx-auto">
-              <Bar 
-                data={totalBalanceData} 
+              <Bar
+                data={totalBalanceData}
                 options={{
                   ...chartOptions,
                   maintainAspectRatio: false,
@@ -726,7 +735,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                       }
                     }
                   }
-                }} 
+                }}
               />
             </div>
           </div>
@@ -776,9 +785,10 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
 
         {/* Dividend History Table */}
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">SCHD Dividend History</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+            SCHD Dividend History
+          </h2>
 
-          {/* 新的卡片布局 */}
           <div className="mt-8 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition-shadow text-center">
               <label className="block text-gray-600 text-sm">Annual Dividend per Share</label>
@@ -823,8 +833,8 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
             </table>
           </div>
         </div>
-
       </section>
+
     </div>
   );
 } 

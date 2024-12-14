@@ -11,6 +11,9 @@ export interface StockDetail {
     annualDividend: number;
     dividendYield: number;
     dividendHistory: StockDividend[];
+
+    dividendGrowthRate: number;
+    stockAppreciation: number;
 }
 
 export interface StockDividend {
@@ -38,7 +41,9 @@ export const getStockDetails = unstable_cache(
                 annualDividend,
                 currentPrice,
                 dividendYield,
-                dividendHistory
+                dividendHistory,
+                dividendGrowthRate: 5, // 默认值5%
+                stockAppreciation: 5 //默认值5%
             };
         } catch (error) {
             console.error('Error fetching stock data:', error);

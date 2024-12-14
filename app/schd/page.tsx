@@ -1,6 +1,7 @@
 import { getStockDetails } from '@/lib/api';
 import StockDividendCalculator from '@/components/StockCalculator';
 import PopularStocks from '@/components/PopularStocks';
+import SCHDFAQSection from '@/components/FAQSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -33,11 +34,24 @@ export const revalidate = 3600; // 每小时重新验证一次数据
 export default async function SCHDPage() {
   try {
     const stockDetails = await getStockDetails('SCHD');
+    stockDetails.dividendGrowthRate = 10.5;
+    stockDetails.stockAppreciation = 11.4;
 
     return (
       <div>
         <StockDividendCalculator stockDetail={stockDetails} />
-        <PopularStocks />
+        
+        <section className="py-8 border-t border-gray-100">
+          <div className="container">
+            <PopularStocks />
+          </div>
+        </section>
+
+        <section className="py-8 border-t border-gray-100">
+          <div className="container">
+            <SCHDFAQSection />
+          </div>
+        </section>
       </div>
     );
   } catch (error) {
