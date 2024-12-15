@@ -1,6 +1,8 @@
 import { getStockDetails } from '@/lib/api';
 import StockDividendCalculator from '@/components/StockCalculator';
 import PopularStocks from '@/components/PopularStocks';
+import FAQSection, { generalStockFaqs } from '@/components/FAQSection';
+import { Metadata } from 'next';
 
 export const revalidate = 3600; // 每小时重新验证一次数据
 
@@ -19,7 +21,21 @@ export default async function StockPage({ params }: PageProps) {
     return (
       <div>
         <StockDividendCalculator stockDetail={stockDetails} />
-        <PopularStocks />
+        
+        <section className="py-8 border-t border-gray-100">
+          <div className="container">
+            <PopularStocks />
+          </div>
+        </section>
+
+        <section className="py-8 border-t border-gray-100">
+          <div className="container">
+            <FAQSection
+              faqs={generalStockFaqs}
+              title={`Frequently Asked Questions About ${params.ticker.toUpperCase()} Dividend Calculator`}
+            />
+          </div>
+        </section>
       </div>
     );
   } catch (error) {
@@ -35,4 +51,32 @@ export default async function StockPage({ params }: PageProps) {
       </div>
     );
   }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const ticker = params.ticker.toUpperCase();
+
+  return {
+    title: `${ticker} Dividend Calculator - Calculate Your Stock Investment Returns`,
+    description: `Free ${ticker} dividend calculator to analyze your investment returns. Track dividend history, calculate yields, estimate future income, and project dividend growth. Updated with real-time ${ticker} data.`,
+    openGraph: {
+      title: `${ticker} Dividend Calculator | Investment Return Analysis Tool`,
+      description: `Calculate ${ticker} dividend yields and analyze payment history with our free calculator. Get real-time stock data and project future dividend income.`,
+      type: "website",
+      url: `https://dividend-calculator.org/${ticker.toLowerCase()}`,
+    },
+    keywords: [
+      `${ticker} dividend calculator`,
+      `${ticker} stock analysis`,
+      `${ticker} yield calculator`,
+      `${ticker} dividend history`,
+      "dividend growth calculator",
+      "investment return calculator",
+      "stock dividend analysis",
+      "dividend projection tool"
+    ].join(", "),
+    alternates: {
+      canonical: `https://dividend-calculator.org/${ticker.toLowerCase()}`
+    }
+  };
 } 

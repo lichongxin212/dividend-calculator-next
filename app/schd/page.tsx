@@ -1,7 +1,7 @@
 import { getStockDetails } from '@/lib/api';
 import StockDividendCalculator from '@/components/StockCalculator';
 import PopularStocks from '@/components/PopularStocks';
-import SCHDFAQSection from '@/components/FAQSection';
+import FAQSection, { schdFaqs } from '@/components/FAQSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default async function SCHDPage() {
     return (
       <div>
         <StockDividendCalculator stockDetail={stockDetails} />
-        
+
         <section className="py-8 border-t border-gray-100">
           <div className="container">
             <PopularStocks />
@@ -49,7 +49,10 @@ export default async function SCHDPage() {
 
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <SCHDFAQSection />
+            <FAQSection
+              faqs={schdFaqs}
+              title="Frequently Asked Questions About SCHD Dividend Calculator"
+            />
           </div>
         </section>
       </div>

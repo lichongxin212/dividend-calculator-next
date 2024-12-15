@@ -42,7 +42,7 @@ export const getStockDetails = unstable_cache(
                 currentPrice,
                 dividendYield,
                 dividendHistory,
-                dividendGrowthRate: 5, // 默认值5%
+                dividendGrowthRate: 3, // 默认值3%
                 stockAppreciation: 5 //默认值5%
             };
         } catch (error) {
