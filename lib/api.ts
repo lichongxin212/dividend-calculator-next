@@ -36,14 +36,29 @@ export const getStockDetails = unstable_cache(
             const annualDividend = calculateAnnualDividend(dividendHistory);
             const dividendYield = (annualDividend / currentPrice) * 100;
 
+            // 设置每个股票的历史增长率
+            const growthRates: { [key: string]: { dividend: number; price: number } } = {
+                'SCHD': { dividend: 10.5, price: 11.4 },    // 参考过去10年数值
+                'JEPI': { dividend: 0.5, price: 9.3 },    // 参考过去5年数值
+                'JEPQ': { dividend: 3.86, price: 6.15 },    // 较新ETF，保守估计
+                'VOO': { dividend: 7.8, price: 13.3 },    // 跟踪标普500
+                'KO': { dividend: 3.5, price: 6.7 },      // 可口可乐60年增长历史
+                'MSFT': { dividend: 10.2, price: 25 },  // 科技股高增长
+                'BP': { dividend: 4.0, price: 7.5 },      // 石油公司稳定增长
+                'T': { dividend: 0.5, price: 3.2 }        // AT&T重组后保守估计
+            };
+
+            const defaultRates = { dividend: 3, price: 5 }; // 默认保守估计
+            const rates = growthRates[ticker] || defaultRates;
+
             return {
                 ticker,
                 annualDividend,
                 currentPrice,
                 dividendYield,
                 dividendHistory,
-                dividendGrowthRate: 3, // 默认值3%
-                stockAppreciation: 5 //默认值5%
+                dividendGrowthRate: rates.dividend,
+                stockAppreciation: rates.price
             };
         } catch (error) {
             console.error('Error fetching stock data:', error);

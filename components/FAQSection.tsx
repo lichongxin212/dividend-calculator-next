@@ -92,6 +92,34 @@ const generalStockFaqs: FAQItem[] = [
   }
 ];
 
+const portfolioFaqs: FAQItem[] = [
+  {
+    id: 1,
+    question: "How does the Portfolio Dividend Calculator help with investment planning?",
+    answer: "Our Portfolio Dividend Calculator helps you analyze and optimize your entire dividend portfolio. It combines multiple stocks' dividend data, tracks total portfolio income, and projects future returns with DRIP options. This comprehensive tool helps you make informed decisions about portfolio diversification and income strategies."
+  },
+  {
+    id: 2,
+    question: "What is portfolio dividend diversification and why is it important?",
+    answer: "Portfolio dividend diversification involves investing in multiple dividend-paying stocks across different sectors and payment frequencies. This strategy helps reduce risk and create a more stable income stream. Our calculator shows you monthly income distribution and helps balance your portfolio for optimal dividend scheduling."
+  },
+  {
+    id: 3,
+    question: "How can I maximize my portfolio's dividend income?",
+    answer: "To maximize dividend income, consider factors like yield, growth rates, and payment frequency of different stocks. Our calculator helps you analyze various combinations of stocks, compare DRIP vs non-DRIP scenarios, and visualize how additional investments affect your total portfolio income over time."
+  },
+  {
+    id: 4,
+    question: "How do I track and analyze multiple dividend stocks in my portfolio?",
+    answer: "Our calculator simplifies portfolio management by tracking multiple stocks simultaneously. You can monitor each stock's contribution to total income, analyze portfolio yield, and view combined dividend payment schedules. The tool provides clear visualizations of your portfolio's income distribution and growth potential."
+  },
+  {
+    id: 5,
+    question: "What factors should I consider when building a dividend portfolio?",
+    answer: "Key factors include dividend sustainability, growth potential, payment frequency, and sector diversification. Our calculator helps you evaluate these aspects by showing portfolio-wide metrics, income projections, and distribution analysis. This helps you build a well-balanced dividend portfolio aligned with your investment goals."
+  }
+];
+
 interface FAQSectionProps {
   faqs: FAQItem[];
   title: string;
@@ -146,4 +174,4 @@ export default function FAQSection({ faqs, title }: FAQSectionProps) {
   );
 }
 
-export { schdFaqs, jepiFaqs, generalStockFaqs }; 
+export { schdFaqs, jepiFaqs, generalStockFaqs, portfolioFaqs }; 

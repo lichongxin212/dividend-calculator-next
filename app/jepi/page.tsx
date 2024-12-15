@@ -34,9 +34,6 @@ export default async function JEPIPage() {
   try {
     const stockDetails = await getStockDetails('JEPI');
 
-    stockDetails.dividendGrowthRate = 0.5;
-    stockDetails.stockAppreciation = 9.3;
-
     return (
       <div>
         <StockDividendCalculator stockDetail={stockDetails} />

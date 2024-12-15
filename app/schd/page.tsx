@@ -34,8 +34,6 @@ export const revalidate = 3600; // 每小时重新验证一次数据
 export default async function SCHDPage() {
   try {
     const stockDetails = await getStockDetails('SCHD');
-    stockDetails.dividendGrowthRate = 10.5;
-    stockDetails.stockAppreciation = 11.4;
 
     return (
       <div>
