@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { unstable_cache } from 'next/cache';
 
-const API_KEY = process.env.POLYGON_API_KEY;
+const API_KEY = "Y8hrbNpzzjb9CYjEANUWFHYvvQaS8f3p";
 const BASE_URL = 'https://api.polygon.io';
 
 export interface StockDetail {

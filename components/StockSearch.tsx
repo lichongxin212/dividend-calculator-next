@@ -133,7 +133,7 @@ export default function StockSearch({ buttonText, onAddStock }: StockSearchProps
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Enter a stock ticker symbol, e.g. SCHD"
+            placeholder="Enter a stock name or ticker symbol, e.g. SCHD, Microsoft"
             className="w-full px-6 py-4 text-lg border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent"
           />
           <button 
