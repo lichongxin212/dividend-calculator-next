@@ -305,11 +305,31 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
     ]
   };
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: isMobile ? 'bottom' : 'top',
+        labels: {
+          boxWidth: isMobile ? 12 : 40,
+          padding: isMobile ? 10 : 20,
+          font: {
+            size: isMobile ? 10 : 12
+          }
+        }
       },
       tooltip: {
         callbacks: {
@@ -402,6 +422,13 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
         ticks: {
           callback: function (value: any) {
             return '$' + value.toLocaleString();
+          }
+        }
+      },
+      x: {
+        ticks: {
+          font: {
+            size: isMobile ? 8 : 12
           }
         }
       }
@@ -650,20 +677,20 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                     ...chartOptions.plugins,
                     legend: {
                       ...chartOptions.plugins.legend,
-                      position: window.innerWidth < 768 ? 'bottom' : 'top',
+                      position: isMobile ? 'bottom' : 'top',
                       labels: {
-                        boxWidth: window.innerWidth < 768 ? 12 : 40,
-                        padding: window.innerWidth < 768 ? 10 : 20,
+                        boxWidth: isMobile ? 12 : 40,
+                        padding: isMobile ? 10 : 20,
                         font: {
-                          size: window.innerWidth < 768 ? 10 : 12
+                          size: isMobile ? 10 : 12
                         }
                       }
                     },
                     datalabels: {
                       ...chartOptions.plugins.datalabels,
-                      display: window.innerWidth < 768 ? false : true,
+                      display: !isMobile,
                       font: {
-                        size: window.innerWidth < 768 ? 10 : 12
+                        size: isMobile ? 10 : 12
                       }
                     }
                   },
@@ -671,14 +698,14 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                     x: {
                       ticks: {
                         font: {
-                          size: window.innerWidth < 768 ? 8 : 12
+                          size: isMobile ? 8 : 12
                         }
                       }
                     },
                     y: {
                       ticks: {
                         font: {
-                          size: window.innerWidth < 768 ? 8 : 12
+                          size: isMobile ? 8 : 12
                         }
                       }
                     }
@@ -702,20 +729,20 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                     ...chartOptions.plugins,
                     legend: {
                       ...chartOptions.plugins.legend,
-                      position: window.innerWidth < 768 ? 'bottom' : 'top',
+                      position: isMobile ? 'bottom' : 'top',
                       labels: {
-                        boxWidth: window.innerWidth < 768 ? 12 : 40,
-                        padding: window.innerWidth < 768 ? 10 : 20,
+                        boxWidth: isMobile ? 12 : 40,
+                        padding: isMobile ? 10 : 20,
                         font: {
-                          size: window.innerWidth < 768 ? 10 : 12
+                          size: isMobile ? 10 : 12
                         }
                       }
                     },
                     datalabels: {
                       ...chartOptions.plugins.datalabels,
-                      display: window.innerWidth < 768 ? false : true,
+                      display: !isMobile,
                       font: {
-                        size: window.innerWidth < 768 ? 10 : 12
+                        size: isMobile ? 10 : 12
                       }
                     }
                   },
@@ -723,14 +750,14 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
                     x: {
                       ticks: {
                         font: {
-                          size: window.innerWidth < 768 ? 8 : 12
+                          size: isMobile ? 8 : 12
                         }
                       }
                     },
                     y: {
                       ticks: {
                         font: {
-                          size: window.innerWidth < 768 ? 8 : 12
+                          size: isMobile ? 8 : 12
                         }
                       }
                     }
