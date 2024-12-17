@@ -372,11 +372,9 @@ export default function PortfolioCalculator() {
                         },
                         datalabels: {
                           ...chartOptions.plugins.datalabels,
-                          formatter: (value, ctx) => {
-                            const sum = ctx.dataset.data.reduce((a, b) => 
-                              (Number(a) || 0) + (Number(b) || 0), 0
-                            );
-                            return ((Number(value) / sum) * 100).toFixed(1) + '%';
+                          formatter: (value: any, ctx: any) => {
+                            const sum = ctx.dataset.data.reduce((a: number, b: number) => Number(a) + Number(b), 0);
+                            return ((Number(value) / Number(sum)) * 100).toFixed(1) + '%';
                           }
                         }
                       }
