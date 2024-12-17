@@ -57,8 +57,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ticker = params.ticker.toUpperCase();
 
   return {
-    title: `${ticker} Dividend Calculator - Calculate Your Stock Investment Returns`,
-    description: `Free ${ticker} dividend calculator to analyze your investment returns. Track dividend history, calculate yields, estimate future income, and project dividend growth. Updated with real-time ${ticker} data.`,
+    title: `${ticker} Dividend Calculator - Calculate ${ticker} Investment Returns`,
+    description: `Free ${ticker} dividend calculator to track dividend history, calculate dividend yields, and estimate future income with real-time data.`,
     openGraph: {
       title: `${ticker} Dividend Calculator | Investment Return Analysis Tool`,
       description: `Calculate ${ticker} dividend yields and analyze payment history with our free calculator. Get real-time stock data and project future dividend income.`,

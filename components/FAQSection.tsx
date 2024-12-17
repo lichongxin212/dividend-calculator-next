@@ -67,8 +67,8 @@ const jepiFaqs: FAQItem[] = [
 const generalStockFaqs: FAQItem[] = [
   {
     id: 1,
-    question: "How does the dividend calculator work?",
-    answer: "Our dividend calculator uses real-time stock data and historical dividend information to project potential returns. It factors in your initial investment, dividend reinvestment (DRIP) options, additional periodic investments, and customizable growth rates to provide comprehensive dividend income projections."
+    question: "How does the stock dividend calculator work?",
+    answer: "Our stock dividend calculator uses real-time stock data and historical dividend information to project potential returns. It factors in your initial investment, dividend reinvestment (DRIP) options, additional periodic investments, and customizable growth rates to provide comprehensive dividend income projections."
   },
   {
     id: 2,

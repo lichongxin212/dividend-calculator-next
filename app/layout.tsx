@@ -8,11 +8,15 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dividend Calculator",
-  description: "Calculate your dividend investment returns",
+  title: "Free Dividend Calculator",
+  description: "Calculate your dividend investment returns easily with real-time stock data.",
   icons: {
-    icon: '/favicon.ico',
-  },
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-16x16.png', type: 'image/png', sizes: '16x16' }
+    ],
+    shortcut: '/favicon.ico'
+  }
 };
 
 export default function RootLayout({

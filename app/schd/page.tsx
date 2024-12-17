@@ -5,8 +5,8 @@ import FAQSection, { schdFaqs } from '@/components/FAQSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "SCHD Dividend Calculator - Calculate Your SCHD Investment Returns",
-  description: "Free SCHD dividend calculator to analyze Schwab US Dividend Equity ETF returns over time. Track dividend history, calculate yields, estimate monthly income, and project future dividend growth. Updated daily with latest SCHD data.",
+  title: "SCHD Dividend Calculator - Calculate SCHD Investment Returns",
+  description: "Free SCHD dividend calculator to track dividend history, calculate dividend yields, and estimate monthly income with real-time data.",
   openGraph: {
     title: "SCHD Dividend Calculator | Calculate Your SCHD Investment Returns",
     description: "Calculate SCHD dividend yields, analyze payment history, and estimate future income with our free dividend calculator. Get real-time data for Schwab US Dividend Equity ETF.",
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   },
   keywords: [
     "SCHD dividend calculator",
-    "Schwab US Dividend Equity ETF",
     "SCHD yield calculator",
     "SCHD dividend history",
     "SCHD ETF analysis",

@@ -5,8 +5,8 @@ import FAQSection, { jepiFaqs } from '@/components/FAQSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "JEPI Dividend Calculator - Calculate Your JPMorgan Equity Premium Income ETF Returns",
-  description: "Free JEPI dividend calculator to analyze JPMorgan Equity Premium Income ETF returns. Track monthly dividend income, calculate yields, and project future returns with our real-time calculator. Updated daily with latest JEPI data.",
+  title: "JEPI Dividend Calculator - Calculate JEPI Investment Returns",
+  description: "Free JEPI dividend calculator to track dividend history, calculate dividend yields, and estimate monthly income with real-time data.",
   openGraph: {
     title: "JEPI Dividend Calculator | Calculate Your Monthly Dividend Income",
     description: "Calculate JEPI dividend yields, analyze monthly payments, and estimate future income with our free calculator. Get real-time data for JPMorgan Equity Premium Income ETF.",
