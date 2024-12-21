@@ -40,16 +40,16 @@ export default async function JEPIPage() {
         
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <PopularStocks />
+          <FAQSection
+              faqs={jepiFaqs}
+              title="Frequently Asked Questions About JEPI Dividend Calculator"
+            />
           </div>
         </section>
 
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-          <FAQSection
-              faqs={jepiFaqs}
-              title="Frequently Asked Questions About JEPI Dividend Calculator"
-            />
+            <PopularStocks />
           </div>
         </section>
       </div>

@@ -813,7 +813,7 @@ export default function StockDividendCalculator({ stockDetail }: StockDividendCa
         {/* Dividend History Table */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
-            SCHD Dividend History
+            {stockDetail.ticker} Dividend History
           </h2>
 
           <div className="mt-8 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">

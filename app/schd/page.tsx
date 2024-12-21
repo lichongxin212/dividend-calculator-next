@@ -40,16 +40,16 @@ export default async function SCHDPage() {
 
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <PopularStocks />
+            <FAQSection
+              faqs={schdFaqs}
+              title="Frequently Asked Questions About SCHD Dividend Calculator"
+            />
           </div>
         </section>
 
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <FAQSection
-              faqs={schdFaqs}
-              title="Frequently Asked Questions About SCHD Dividend Calculator"
-            />
+            <PopularStocks />
           </div>
         </section>
       </div>

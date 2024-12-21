@@ -24,16 +24,16 @@ export default async function StockPage({ params }: PageProps) {
         
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <PopularStocks />
+            <FAQSection
+              faqs={generalStockFaqs}
+              title={`Frequently Asked Questions About ${params.ticker.toUpperCase()} Dividend Calculator`}
+            />
           </div>
         </section>
 
         <section className="py-8 border-t border-gray-100">
           <div className="container">
-            <FAQSection
-              faqs={generalStockFaqs}
-              title={`Frequently Asked Questions About ${params.ticker.toUpperCase()} Dividend Calculator`}
-            />
+            <PopularStocks />
           </div>
         </section>
       </div>
